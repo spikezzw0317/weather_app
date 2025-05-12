@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气预报</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://openweathermap.org/img/wn/02d.png" type="image/png">
+    <meta name="description" content="实时天气预报应用，提供当前天气、未来预报和详细气象信息">
+</head>
+
+<body>
+    <div class="weather-app">
+        <!-- 头部搜索区域 -->
+        <header class="header">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="输入城市名称...">
+                <button class="search-btn">搜索</button>
+            </div>
+        </header>
+
+        <section class="radar-map">
+            <h2 class="section-title">降水雷达图</h2>
+            <div class="radar-embed">
+                <iframe
+                    src="https://embed.windy.com/embed2.html?lat=35&lon=105&detailLat=35&detailLon=105&width=650&height=450&zoom=5&level=surface&overlay=rain&menu=&message=true&marker=&calendar=&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
+                    width="100%" height="450" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- 主天气信息 -->
+        <main class="main-content">
+            <!-- 当前天气 -->
+            <section class="current-weather">
+                <h1 class="location">北京</h1>
+                <div class="weather-info">
+                    <div class="temperature">28°C</div>
+                    <div class="conditions">晴</div>
+                </div>
+                <div class="weather-icon">
+                    <img src="https://openweathermap.org/img/wn/01d@4x.png" alt="晴">
+                </div>
+                <!-- 出行建议 -->
+                <div class="travel-advice">
+                    <h3 class="advice-title">今日出行建议</h3>
+                    <div class="advice-container">
+                        <div class="advice-item" id="umbrella-advice">
+                            <div class="advice-icon">🌂</div>
+                            <div class="advice-text">暂无数据</div>
+                        </div>
+                        <div class="advice-item" id="sun-advice">
+                            <div class="advice-icon">☀️</div>
+                            <div class="advice-text">暂无数据</div>
+                        </div>
+                        <div class="advice-item" id="mask-advice">
+                            <div class="advice-icon">😷</div>
+                            <div class="advice-text">暂无数据</div>
+                        </div>
+                        <div class="advice-item" id="clothing-advice">
+                            <div class="advice-icon">👕</div>
+                            <div class="advice-text">暂无数据</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="detail-item">
+                        <span class="label">湿度</span>
+                        <span class="value">45%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">风速</span>
+                        <span class="value">12 km/h</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">风向</span>
+                        <span class="value">东北</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">云量</span>
+                        <span class="value">25%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 未来几天预报 -->
+            <section class="forecast">
+                <h2 class="section-title">未来5天预报</h2>
+                <div class="forecast-days">
+                    <!-- 预报项 -->
+                    <div class="forecast-day">
+                        <div class="day">周一</div>
+                        <div class="date">5月7日</div>
+                        <div class="forecast-icon">
+                            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="多云">
+                        </div>
+                        <div class="temps">
+                            <span class="high">30°</span>
+                            <span class="low">22°</span>
+                        </div>
+                        <div class="forecast-desc">多云</div>
+                    </div>
+                    <!-- 重复4个类似结构 -->
+                </div>
+            </section>
+
+            <!-- 5天温度趋势图 -->
+            <section class="trend-chart">
+                <h2 class="section-title">5天温度趋势</h2>
+                <canvas id="five-day-chart" width="700" height="200"></canvas>
+            </section>
+
+            <!-- 每小时预报 -->
+            <section class="hourly-forecast">
+                <h2 class="section-title">未来24小时预报</h2>
+                <div class="hourly-container">
+                    <!-- 每小时预报项 -->
+                    <div class="hourly-item">
+                        <div class="time">现在</div>
+                        <div class="icon"><img src="https://openweathermap.org/img/wn/01d.png" alt="晴"></div>
+                        <div class="temp">28°</div>
+                        <div class="hourly-desc">晴</div>
+                    </div>
+                    <!-- 重复多个类似结构 -->
+                </div>
+            </section>
+
+            <!-- 24小时温度趋势图 -->
+            <section class="trend-chart">
+                <h2 class="section-title">24小时温度趋势</h2>
+                <canvas id="hourly-chart" width="700" height="200"></canvas>
+            </section>
+        </main>
+
+        <!-- 底部信息 -->
+        <footer class="footer">
+            <p>数据更新时间: 2023-06-15 14:30</p>
+            <p>数据来源: OpenWeatherMap</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+
+<!-- 🌟 Chat 模态对话框 -->
+<div class="chat-modal" id="chatModal">
+  <div class="chat-box">
+    <div class="chat-header">
+      <span>🧭 出行助手</span>
+      <button id="closeChatBtn">✖</button>
+    </div>
+    <div class="chat-content" id="chatContent"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="输入你的出行计划..." />
+      <button id="sendChatBtn">发送</button>
+    </div>
+  </div>
+</div>
+
+<!-- 🌟 右下角悬浮按钮 -->
+<button id="openChatBtn" class="floating-btn">AI</button>
+
+</div>
+
+</body>
+
+</html>
